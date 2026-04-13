@@ -69,7 +69,7 @@ Understanding audio requires more than simply transcribing words — it demands 
 ## Model Architecture
 
 <p align="center">
-  <img src="./assets/arc.png" width="95%" />
+  <img src="./assets/arc2.png" width="95%" />
 </p>
 
 MOSS-Audio follows a modular design comprising three components: an audio encoder, a modality adapter, and a large language model. Raw audio is first encoded by **MOSS-Audio-Encoder** into continuous temporal representations at **12.5 Hz**, which are then projected into the language model's embedding space through the adapter and finally consumed by the LLM for auto-regressive text generation. 

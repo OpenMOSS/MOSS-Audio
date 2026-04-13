@@ -69,7 +69,7 @@ MOSS-Audio 是由 [MOSI.AI](https://mosi.cn/#hero)、[OpenMOSS 团队](https://w
 ## 模型架构
 
 <p align="center">
-  <img src="./assets/arc.png" width="95%" />
+  <img src="./assets/arc2.png" width="95%" />
 </p>
 
 MOSS-Audio 采用由三部分组成的模块化设计：音频编码器、模态适配器和大语言模型。原始音频首先由 **MOSS-Audio-Encoder** 编码为 **12.5 Hz** 的连续时序表征，然后通过适配器投影到语言模型的嵌入空间，最终由 LLM 完成自回归文本生成。
