@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="https://mosi.cn/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MOSS-Audio is an open-source audio understanding model supporting speech recognition, environmental sound understanding, music analysis, time-aware QA, and complex reasoning."
+    />
+    <meta name="theme-color" content="#f7f5f0" />
+    <title>MOSS-Audio | Audio Understanding Model</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  </head>
+  <body>
+    <!-- Desktop left sidebar -->
+    <nav class="sidebar" aria-label="Page navigation">
+      <div class="sidebar-inner">
+        <a class="sidebar-brand" href="#overview" aria-label="MOSS-Audio">
+          <span class="sidebar-mark">Audio</span>
+          <span class="sidebar-name">MOSS</span>
+        </a>
+        <div class="sidebar-links">
+          <a class="sidebar-link" href="#overview">Overview</a>
+          <a class="sidebar-link" href="#features">Features</a>
+          <a class="sidebar-link" href="#architecture">Architecture</a>
+          <a class="sidebar-link" href="#evaluation">Evaluation</a>
+          <a class="sidebar-link" href="#demo">Demo</a>
+          <a class="sidebar-link" href="#quickstart">Quickstart</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile top bar -->
+    <header class="mobile-header">
+      <span class="mobile-brand">MOSS-Audio</span>
+      <div class="mobile-actions">
+        <a class="btn btn-dark btn-sm" href="#demo">Demo ↗</a>
+      </div>
+    </header>
+
+    <main class="content-main">
+      <!-- Paper header -->
+      <header class="paper-header reveal" id="overview">
+        <div class="paper-tags">
+          <span class="tag">Audio Understanding</span>
+          <span class="tag">Speech Recognition</span>
+          <span class="tag">Chain-of-Thought</span>
+          <span class="tag">Apr 13, 2026</span>
+        </div>
+
+        <h1>MOSS-Audio</h1>
+
+        <p class="paper-subtitle">
+          An open-source audio understanding model supporting speech recognition,
+          environmental sound analysis, music understanding, time-aware QA,
+          and complex multi-step reasoning.
+        </p>
+
+        <div class="paper-actions">
+          <a
+            class="btn btn-dark"
+            href="https://github.com/OpenMOSS/MOSS-Audio"
+            target="_blank"
+            rel="noopener"
+          >GitHub ↗</a>
+          <a
+            class="btn btn-dark"
+            href="https://huggingface.co/collections/OpenMOSS-Team/moss-audio"
+            target="_blank"
+            rel="noopener"
+          >Hugging Face ↗</a>
+          <a
+            class="btn btn-outline"
+            href="https://huggingface.co/spaces/OpenMOSS-Team/MOSS-Audio-Instruct"
+            target="_blank"
+            rel="noopener"
+          >Try Now ↗</a>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <p class="meta-label">Authors</p>
+            <p class="meta-value">OpenMOSS Team</p>
+          </div>
+          <div class="meta-item">
+            <p class="meta-label">Affiliations</p>
+            <p class="meta-value">Fudan NLP Lab · MOSI.AI · SII</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Introduction -->
+      <section class="paper-section reveal" id="introduction">
+        <div class="body-text">
+          <img
+            src="./assets/picture/moss-audio-image.png"
+            alt="MOSS-Audio — Open Source Audio Understanding Model"
+            class="banner-img"
+          />
+        </div>
+
+        <br />
+
+        <p class="body-text">
+          Understanding audio requires more than simply transcribing words — it demands the
+          ability to perceive acoustic cues, recognize speakers and emotions, interpret
+          environmental sounds, reason over temporal context, and handle complex multi-step
+          inference. <strong>MOSS-Audio</strong> is built to unify these capabilities within
+          a single model.
+        </p>
+        <p class="body-text" style="margin-top: 1rem;">
+          We release <strong>four models</strong> in this launch:
+          <strong>MOSS-Audio-4B-Instruct</strong>, <strong>MOSS-Audio-4B-Thinking</strong>,
+          <strong>MOSS-Audio-8B-Instruct</strong>, and
+          <strong>MOSS-Audio-8B-Thinking</strong>. The Instruct variants are optimized for
+          direct instruction following, while the Thinking variants provide stronger chain-of-thought
+          reasoning capabilities.
+        </p>
+      </section>
+
+      <!-- Features -->
+      <section class="paper-section reveal" id="features">
+        <h2>Key Capabilities</h2>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <p class="feature-label">Speech Recognition</p>
+            <p class="feature-value">ASR + Timestamps</p>
+            <p class="feature-desc">Transcribes speech with optional word- and sentence-level timestamp alignment across diverse acoustic conditions.</p>
+          </div>
+          <div class="feature-item">
+            <p class="feature-label">Speaker Analysis</p>
+            <p class="feature-value">Identity & Emotion</p>
+            <p class="feature-desc">Identifies speaker characteristics, analyzes emotional state, and detects key acoustic events.</p>
+          </div>
+          <div class="feature-item">
+            <p class="feature-label">Environmental Audio</p>
+            <p class="feature-value">Scene Understanding</p>
+            <p class="feature-desc">Extracts cues from background sounds, noise, and non-speech signals to infer scene context.</p>
+          </div>
+          <div class="feature-item">
+            <p class="feature-label">Music Understanding</p>
+            <p class="feature-value">Style & Emotion</p>
+            <p class="feature-desc">Analyzes musical style, emotional progression, instrumentation, and salient acoustic features.</p>
+          </div>
+          <div class="feature-item">
+            <p class="feature-label">Audio QA</p>
+            <p class="feature-value">Open-Ended QA</p>
+            <p class="feature-desc">Answers questions and generates summaries about speech, podcasts, meetings, and recordings.</p>
+          </div>
+          <div class="feature-item">
+            <p class="feature-label">Complex Reasoning</p>
+            <p class="feature-value">Chain-of-Thought</p>
+            <p class="feature-desc">Multi-hop reasoning over audio content via chain-of-thought training and reinforcement learning.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Architecture -->
+      <section class="paper-section reveal" id="architecture">
+        <h2>Architecture</h2>
+
+        <p class="section-note arch-intro">
+          MOSS-Audio follows a modular design comprising three components: a dedicated
+          <strong>audio encoder</strong>, a <strong>modality adapter</strong>, and a
+          <strong>large language model</strong>. Raw audio is encoded into continuous temporal
+          representations at 12.5 Hz, projected into the LLM's embedding space, and consumed
+          for auto-regressive text generation.
+        </p>
+
+        <div class="body-text">
+          <img
+            src="./assets/picture/arc.svg"
+            alt="MOSS-Audio Architecture: Audio Encoder → Modality Adapter → LLM"
+            class="arch-img"
+          />
+          <p class="fig-caption">
+            Overall architecture of MOSS-Audio
+          </p>
+        </div>
+
+        <br />
+
+        <div class="body-text">
+          <h3>DeepStack Cross-Layer Feature Injection</h3>
+          <p class="arch-copy">
+            Using only the encoder's top-layer features tends to lose low-level prosody,
+            transient events, and local time-frequency structure. MOSS-Audio uses a
+            <strong>DeepStack</strong>-inspired cross-layer injection module: features from
+            earlier and intermediate encoder layers are independently projected and injected
+            into the LLM's early layers, preserving multi-granularity information from
+            low-level acoustic details to high-level semantic abstractions.
+          </p>
+          <div class="arch-chip-row">
+            <span class="arch-chip">Multi-layer injection</span>
+            <span class="arch-chip">Preserves prosody &amp; transients</span>
+            <span class="arch-chip">Encoder trained from scratch</span>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="body-text">
+          <h3>Time-Aware Representation</h3>
+          <p class="arch-copy">
+            Explicit <strong>time-marker tokens</strong> are inserted between audio frame
+            representations at fixed intervals during pretraining, enabling the model to learn
+            "what happened when" within a unified text generation framework. This naturally
+            supports timestamp ASR, event localization, time-based QA, and long-audio
+            retrospection.
+          </p>
+          <div class="arch-chip-row">
+            <span class="arch-chip">Time-marker insertion</span>
+            <span class="arch-chip">12.5 Hz token stream</span>
+            <span class="arch-chip">Qwen3-4B backbone</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Evaluation -->
+      <section class="paper-section reveal" id="evaluation">
+        <h2>Evaluation Highlights</h2>
+
+        <p class="section-note">
+          MOSS-Audio is evaluated on comprehensive audio understanding benchmarks spanning
+          general audio, speech captioning, ASR, and timestamp alignment.
+        </p>
+
+        <div class="eval-grid">
+          <div class="eval-card">
+            <p class="eval-label">General Audio (Avg Accuracy)</p>
+            <p class="eval-value">70.80</p>
+            <p class="eval-desc">MOSS-Audio-8B-Thinking reaches 70.80 average accuracy, outperforming all open-source models in the README benchmark table.</p>
+          </div>
+          <div class="eval-card">
+            <p class="eval-label">Speech Captioning (LLM-Judge)</p>
+            <p class="eval-value">3.7252 / 5</p>
+            <p class="eval-desc">MOSS-Audio-Instruct leads in 11 out of 13 speech-captioning dimensions, with MOSS-Audio-8B-Instruct setting the best overall score.</p>
+          </div>
+          <div class="eval-card">
+            <p class="eval-label">ASR (Overall CER ↓)</p>
+            <p class="eval-value">11.30</p>
+            <p class="eval-desc">On the 12-dimension ASR suite, MOSS-Audio achieves the lowest overall CER with particular strength in health-condition, dialect, singing, and non-speech scenarios.</p>
+          </div>
+          <div class="eval-card">
+            <p class="eval-label">Timestamp ASR · AAS ↓</p>
+            <p class="eval-value">35.77 / 131.61</p>
+            <p class="eval-desc">MOSS-Audio-8B-Instruct achieves 35.77 AAS on AISHELL-1 and 131.61 on LibriSpeech, dramatically outperforming prior open baselines.</p>
+          </div>
+        </div>
+
+        <div class="body-text" style="margin-top: 1.5rem;">
+          <div class="chart-wrap">
+            <div id="generalAudioChart" class="echarts-chart" aria-label="General Audio Understanding benchmark comparison bar chart"></div>
+          </div>
+          <p class="fig-caption">
+            General Audio Understanding accuracy comparison across open-source and closed-source models
+          </p>
+        </div>
+
+        <div class="eval-subsection">
+          <div class="eval-subsection-head">
+            <div>
+              <h3>Speech Captioning</h3>
+              <p class="eval-subnote">
+                Fine-grained speech style captioning evaluated with an LLM-as-a-judge protocol
+                across 13 descriptive dimensions.
+              </p>
+            </div>
+            <span class="eval-kicker">LLM-Judge Score ↑</span>
+          </div>
+
+          <div class="chart-wrap">
+            <div
+              id="speechCaptionRadarChart"
+              class="echarts-chart speech-caption-chart"
+              aria-label="Speech captioning radar chart comparing MOSS-Audio with other models"
+            ></div>
+          </div>
+        </div>
+
+        <div class="eval-subsection">
+          <div class="eval-subsection-head">
+            <div>
+              <h3>ASR</h3>
+              <p class="eval-subnote">
+                Summary CER results across 12 ASR evaluation dimensions. Lower is better.
+              </p>
+            </div>
+            <span class="eval-kicker">CER ↓</span>
+          </div>
+
+          <div class="model-table-wrap eval-table-wrap">
+            <table class="model-table eval-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Overall</th>
+                  <th>Health</th>
+                  <th>Dialect</th>
+                  <th>Singing</th>
+                  <th>Non-Speech</th>
+                  <th>Code-Switch</th>
+                  <th>Clean</th>
+                  <th>Noisy</th>
+                  <th>Whisper</th>
+                  <th>Far/Near</th>
+                  <th>Multi-Speaker</th>
+                  <th>Age</th>
+                  <th>Semantic</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Paraformer-Large</td>
+                  <td>15.77</td>
+                  <td>22.18</td>
+                  <td>43.45</td>
+                  <td>32.34</td>
+                  <td>4.95</td>
+                  <td>12.65</td>
+                  <td>3.11</td>
+                  <td>4.67</td>
+                  <td>5.02</td>
+                  <td>17.46</td>
+                  <td>20.33</td>
+                  <td>14.96</td>
+                  <td>7.14</td>
+                </tr>
+                <tr>
+                  <td>GLM-ASR-Nano</td>
+                  <td>17.29</td>
+                  <td>24.49</td>
+                  <td>22.39</td>
+                  <td>51.95</td>
+                  <td>4.65</td>
+                  <td>11.88</td>
+                  <td>3.68</td>
+                  <td>5.02</td>
+                  <td>4.94</td>
+                  <td>27.51</td>
+                  <td>28.02</td>
+                  <td>17.19</td>
+                  <td>7.32</td>
+                </tr>
+                <tr>
+                  <td>Fun-ASR-Nano</td>
+                  <td>12.04</td>
+                  <td>21.99</td>
+                  <td>7.80</td>
+                  <td>19.35</td>
+                  <td>4.76</td>
+                  <td>11.23</td>
+                  <td>2.98</td>
+                  <td>3.46</td>
+                  <td>3.78</td>
+                  <td>18.38</td>
+                  <td>19.82</td>
+                  <td><strong>14.95</strong></td>
+                  <td>6.08</td>
+                </tr>
+                <tr>
+                  <td>SenseVoice-Small</td>
+                  <td>14.50</td>
+                  <td>24.04</td>
+                  <td>8.89</td>
+                  <td>23.79</td>
+                  <td>4.92</td>
+                  <td>13.90</td>
+                  <td>4.13</td>
+                  <td>4.93</td>
+                  <td>5.57</td>
+                  <td>26.66</td>
+                  <td>24.06</td>
+                  <td>17.63</td>
+                  <td>7.55</td>
+                </tr>
+                <tr>
+                  <td>Kimi-Audio-7B-Instruct</td>
+                  <td>14.12</td>
+                  <td>21.11</td>
+                  <td>29.34</td>
+                  <td>21.76</td>
+                  <td>4.68</td>
+                  <td>16.38</td>
+                  <td><strong>2.20</strong></td>
+                  <td><strong>2.15</strong></td>
+                  <td>2.66</td>
+                  <td>21.02</td>
+                  <td>20.61</td>
+                  <td>16.74</td>
+                  <td>6.12</td>
+                </tr>
+                <tr>
+                  <td>Qwen2.5-Omni-3B</td>
+                  <td>15.26</td>
+                  <td>24.65</td>
+                  <td>33.87</td>
+                  <td>24.24</td>
+                  <td>5.54</td>
+                  <td>11.66</td>
+                  <td>2.76</td>
+                  <td>3.56</td>
+                  <td>4.32</td>
+                  <td>22.15</td>
+                  <td>22.91</td>
+                  <td>15.17</td>
+                  <td>7.24</td>
+                </tr>
+                <tr>
+                  <td>Qwen2.5-Omni-7B</td>
+                  <td>15.05</td>
+                  <td>23.85</td>
+                  <td>31.91</td>
+                  <td>22.69</td>
+                  <td>4.56</td>
+                  <td>12.97</td>
+                  <td>2.52</td>
+                  <td>3.16</td>
+                  <td>3.64</td>
+                  <td>25.38</td>
+                  <td>21.01</td>
+                  <td>16.13</td>
+                  <td>6.78</td>
+                </tr>
+                <tr>
+                  <td>Qwen3-Omni-30B-A3B-Instruct</td>
+                  <td>11.39</td>
+                  <td>20.73</td>
+                  <td>15.63</td>
+                  <td>16.01</td>
+                  <td>4.73</td>
+                  <td>11.30</td>
+                  <td>2.23</td>
+                  <td>2.47</td>
+                  <td><strong>1.90</strong></td>
+                  <td><strong>17.08</strong></td>
+                  <td><strong>18.15</strong></td>
+                  <td><strong>11.46</strong></td>
+                  <td><strong>5.74</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>MOSS-Audio-4B-Instruct</strong></td>
+                  <td>11.58</td>
+                  <td>21.11</td>
+                  <td>11.84</td>
+                  <td>10.79</td>
+                  <td><strong>4.01</strong></td>
+                  <td><strong>10.11</strong></td>
+                  <td>3.11</td>
+                  <td>3.72</td>
+                  <td>3.29</td>
+                  <td>18.48</td>
+                  <td>20.33</td>
+                  <td>15.09</td>
+                  <td>8.15</td>
+                </tr>
+                <tr>
+                  <td><strong>MOSS-Audio-8B-Instruct</strong></td>
+                  <td><strong>11.30</strong></td>
+                  <td><strong>19.18</strong></td>
+                  <td><strong>8.76</strong></td>
+                  <td><strong>9.81</strong></td>
+                  <td>4.31</td>
+                  <td>10.18</td>
+                  <td>2.70</td>
+                  <td>3.20</td>
+                  <td>2.75</td>
+                  <td>24.04</td>
+                  <td>24.36</td>
+                  <td>15.26</td>
+                  <td>7.69</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="eval-subsection">
+          <div class="eval-subsection-head">
+            <div>
+              <h3>Timestamp ASR</h3>
+              <p class="eval-subnote">
+                Timestamp alignment quality measured with AAS on both Chinese and English
+                benchmarks. Lower is better.
+              </p>
+            </div>
+            <span class="eval-kicker">AAS ↓</span>
+          </div>
+
+          <div class="model-table-wrap eval-table-wrap eval-table-wrap-compact">
+            <table class="model-table eval-table eval-table-compact">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>AISHELL-1 (zh)</th>
+                  <th>LibriSpeech (en)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Qwen3-Omni-30B-A3B-Instruct</td>
+                  <td>833.66</td>
+                  <td>646.95</td>
+                </tr>
+                <tr>
+                  <td>Gemini-3.1-Pro</td>
+                  <td>708.24</td>
+                  <td>871.19</td>
+                </tr>
+                <tr>
+                  <td>MOSS-Audio-4B-Instruct</td>
+                  <td>76.96</td>
+                  <td>358.13</td>
+                </tr>
+                <tr>
+                  <td><strong>MOSS-Audio-8B-Instruct</strong></td>
+                  <td><strong>35.77</strong></td>
+                  <td><strong>131.61</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Demo -->
+      <section class="paper-section" id="demo">
+        <h2>Demo Gallery</h2>
+
+        <p class="section-note">
+          Browse curated demo samples across speech, acoustic scene understanding, music, and
+          reasoning. Each card includes a paired visual, the input audio, the prompt, a short
+          analysis note, and the model output.
+        </p>
+
+        <div class="demo-overview">
+          <div id="demoStats" class="demo-stats" aria-label="Demo statistics"></div>
+          <div id="demoLegend" class="demo-legend" aria-label="Task coverage"></div>
+        </div>
+
+        <div id="demoTabs" class="demo-tabs" role="tablist" aria-label="Task category"></div>
+        <div id="demoPanels"></div>
+      </section>
+
+      <section class="paper-section" id="quickstart">
+        <h2>Quickstart</h2>
+        <p class="section-note">
+          The setup below mirrors the commands in the main README for local inference, Gradio,
+          and SGLang serving.
+        </p>
+
+        <div class="qs-block">
+          <p class="qs-heading">Environment Setup</p>
+          <div class="code-block">
+            <code>git clone https://github.com/OpenMOSS/MOSS-Audio.git
+cd MOSS-Audio
+
+conda create -n moss-audio python=3.12 -y
+conda activate moss-audio
+
+conda install -c conda-forge "ffmpeg=7" -y
+pip install --extra-index-url https://download.pytorch.org/whl/cu128 -e ".[torch-runtime]"</code>
+          </div>
+        </div>
+
+        <div class="qs-block">
+          <p class="qs-heading">Optional: FlashAttention 2</p>
+          <div class="code-block">
+            <code>pip install --extra-index-url https://download.pytorch.org/whl/cu128 -e ".[torch-runtime,flash-attn]"</code>
+          </div>
+        </div>
+
+        <div class="qs-block">
+          <p class="qs-heading">Basic Usage</p>
+          <div class="code-block">
+            <code>huggingface-cli download OpenMOSS-Team/MOSS-Audio --local-dir ./weights/MOSS-Audio
+huggingface-cli download OpenMOSS-Team/MOSS-Audio-Instruct --local-dir ./weights/MOSS-Audio-Instruct
+
+python infer.py</code>
+          </div>
+        </div>
+
+        <div class="qs-block">
+          <p class="qs-heading">Gradio App</p>
+          <div class="code-block">
+            <code>python app.py</code>
+          </div>
+        </div>
+
+        <div class="qs-block">
+          <p class="qs-heading">SGLang Serving</p>
+          <div class="code-block">
+            <code>git clone -b moss-audio https://github.com/OpenMOSS/sglang.git
+cd sglang
+pip install -e "python[all]"
+pip install nvidia-cudnn-cu12==9.16.0.29
+cd ..
+sglang serve --model-path ./weights/MOSS-Audio --trust-remote-code</code>
+          </div>
+        </div>
+      </section>
+
+
+      <div class="model-table-wrap">
+        <p class="qs-heading" style="margin-bottom: 0.75rem;">Released Models</p>
+        <table class="model-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Audio Encoder</th>
+              <th>LLM Backbone</th>
+              <th>Total Size</th>
+              <th>Hugging Face</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>MOSS-Audio-4B-Instruct</strong></td>
+              <td>MOSS-Audio-Encoder</td>
+              <td>Qwen3-4B</td>
+              <td>~4.6B</td>
+              <td>
+                <a href="https://huggingface.co/OpenMOSS-Team/MOSS-Audio-4B-Instruct" target="_blank" rel="noopener" class="table-link">Model ↗</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>MOSS-Audio-4B-Thinking</strong></td>
+              <td>MOSS-Audio-Encoder</td>
+              <td>Qwen3-4B</td>
+              <td>~4.6B</td>
+              <td>
+                <a href="https://huggingface.co/OpenMOSS-Team/MOSS-Audio-4B-Thinking" target="_blank" rel="noopener" class="table-link">Model ↗</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>MOSS-Audio-8B-Instruct</strong></td>
+              <td>MOSS-Audio-Encoder</td>
+              <td>Qwen3-8B</td>
+              <td>~8.6B</td>
+              <td>
+                <a href="https://huggingface.co/OpenMOSS-Team/MOSS-Audio-8B-Instruct" target="_blank" rel="noopener" class="table-link">Model ↗</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>MOSS-Audio-8B-Thinking</strong></td>
+              <td>MOSS-Audio-Encoder</td>
+              <td>Qwen3-8B</td>
+              <td>~8.6B</td>
+              <td>
+                <a href="https://huggingface.co/OpenMOSS-Team/MOSS-Audio-8B-Thinking" target="_blank" rel="noopener" class="table-link">Model ↗</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <p>© 2026 OpenMOSS Team · Fudan NLP Lab · MOSI.AI · Shanghai Innovation Institute</p>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://github.com/OpenMOSS/MOSS-Audio" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://huggingface.co/collections/OpenMOSS-Team/moss-audio" target="_blank" rel="noopener">Hugging Face</a>
+          <a href="https://www.open-moss.com" target="_blank" rel="noopener">OpenMOSS</a>
+        </nav>
+      </div>
+    </footer>
+
+    <noscript>
+      <div class="noscript-banner">
+        This page uses JavaScript to load the demo audio cards. Please enable
+        JavaScript to browse the samples.
+      </div>
+    </noscript>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

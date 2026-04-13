@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moss-audio"
+version = "0.1.0"
+description = "MOSS-Audio: Open-source audio understanding model"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "OpenMOSS Team" }]
+dependencies = [
+  "safetensors>=0.4.0",
+  "numpy>=2.0",
+  "soundfile>=0.12.0",
+  "tiktoken>=0.12.0",
+  "einops>=0.8.0",
+  "scipy>=1.12.0",
+  "tqdm>=4.60.0",
+  "packaging",
+  "gradio",
+  "requests",
+  "streamlit",
+]
+
+[project.optional-dependencies]
+flash-attn = ["flash-attn"]
+
+torch-runtime = [
+    "accelerate",
+    "torch==2.9.1+cu128",
+    "torchaudio==2.9.1+cu128",
+    "transformers==4.57.1",
+]
+
+
+[project.urls]
+Homepage = "https://github.com/OpenMOSS/MOSS-Audio"
+Repository = "https://github.com/OpenMOSS/MOSS-Audio"
+
+[tool.setuptools]
+
+[tool.setuptools.packages.find]
+include = ["src", "src.*"]

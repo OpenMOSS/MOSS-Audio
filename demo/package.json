@@ -1,0 +1,9 @@
+{
+  "name": "moss-audio-demo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static demo page for MOSS-Audio — open-source audio understanding model",
+  "scripts": {
+    "serve": "python3 -m http.server 4174"
+  }
+}
