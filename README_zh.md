@@ -551,8 +551,10 @@ pip install --extra-index-url https://download.pytorch.org/whl/cu128 -e ".[torch
 先下载模型：
 
 ```bash
-huggingface-cli download OpenMOSS-Team/MOSS-Audio --local-dir ./weights/MOSS-Audio
-huggingface-cli download OpenMOSS-Team/MOSS-Audio-Instruct --local-dir ./weights/MOSS-Audio-Instruct
+hf  download OpenMOSS-Team/MOSS-Audio-4B-Instruct --local-dir ./weights/MOSS-Audio-4B-Instruct 
+hf  download OpenMOSS-Team/MOSS-Audio-4B-Thinking --local-dir ./weights/MOSS-Audio-4B-Thinking 
+hf  download OpenMOSS-Team/MOSS-Audio-8B-Instruct --local-dir ./weights/MOSS-Audio-8B-Instruct 
+hf  download OpenMOSS-Team/MOSS-Audio-8B-Thinking --local-dir ./weights/MOSS-Audio-8B-Thinking 
 ```
 
 然后按需修改 `infer.py` 中的 `MODEL_PATH` / `AUDIO_PATH`，并执行：

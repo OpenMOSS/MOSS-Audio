@@ -547,8 +547,11 @@ pip install --extra-index-url https://download.pytorch.org/whl/cu128 -e ".[torch
 Download the model first:
 
 ```bash
-huggingface-cli download OpenMOSS-Team/MOSS-Audio --local-dir ./weights/MOSS-Audio
-huggingface-cli download OpenMOSS-Team/MOSS-Audio-Instruct --local-dir ./weights/MOSS-Audio-Instruct
+hf  download OpenMOSS-Team/MOSS-Audio-4B-Instruct --local-dir ./weights/MOSS-Audio-4B-Instruct 
+hf  download OpenMOSS-Team/MOSS-Audio-4B-Thinking --local-dir ./weights/MOSS-Audio-4B-Thinking 
+hf  download OpenMOSS-Team/MOSS-Audio-8B-Instruct --local-dir ./weights/MOSS-Audio-8B-Instruct 
+hf  download OpenMOSS-Team/MOSS-Audio-8B-Thinking --local-dir ./weights/MOSS-Audio-8B-Thinking 
+
 ```
 
 Then edit `MODEL_PATH` / `AUDIO_PATH` in `infer.py` as needed, and run:
