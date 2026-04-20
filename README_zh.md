@@ -29,6 +29,7 @@ MOSS-Audio 是由 [MOSI.AI](https://mosi.cn/#hero)、[OpenMOSS 团队](https://w
 
 
 ## 新闻
+* 2026.4.20：我们新增了 MOSS-Audio 微调代码与文档。LoRA 和全参训练示例请见 `finetune/FINETUNE.md`。
 * 2026.4.13：🎉🎉🎉 我们已发布 [MOSS-Audio](https://huggingface.co/collections/OpenMOSS-Team/moss-audio)。博客和论文即将上线！
 
 
@@ -43,6 +44,7 @@ MOSS-Audio 是由 [MOSI.AI](https://mosi.cn/#hero)、[OpenMOSS 团队](https://w
 - [快速开始](#quickstart)
   - [环境配置](#environment-setup)
   - [基础用法](#basic-usage)
+  - [微调](#fine-tuning)
   - [Gradio 应用](#gradio-app)
   - [SGLang 服务](#sglang-serving)
 - [更多信息](#more-information)
@@ -564,6 +566,31 @@ python infer.py
 ```
 
 `infer.py` 中默认的 prompt 是 `Describe this audio.`。如果你想尝试转写、音频问答或语音描述，可以直接修改prompt。
+
+<a id="fine-tuning"></a>
+
+### 微调
+
+我们现在提供了官方微调脚本 `finetune/finetune.py`，完整说明文档见 `finetune/FINETUNE.md`。
+
+训练前请额外安装以下依赖：
+
+```bash
+pip install librosa peft
+```
+
+LoRA 微调最小示例如下：
+
+```bash
+accelerate launch finetune/finetune.py \
+    --model_dir ./weights/MOSS-Audio-4B-Instruct \
+    --data_path train.jsonl \
+    --output_dir ./output/lora \
+    --use_lora \
+    --bf16
+```
+
+训练数据采用包含音频-文本对话的 JSONL 格式。关于数据格式、参数说明、多卡训练和全参数微调，请参考 `finetune/FINETUNE.md`。
 
 ### Gradio 应用
 

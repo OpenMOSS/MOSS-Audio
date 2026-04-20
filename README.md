@@ -29,6 +29,7 @@ MOSS-Audio is an open-source **audio understanding model** from [MOSI.AI](https:
 
 
 ## News
+* 2026.4.20: We have added the MOSS-Audio fine-tuning code and documentation. See `finetune/FINETUNE.md` for LoRA and full-parameter training examples.
 * 2026.4.13: 🎉🎉🎉 We have released [MOSS-Audio](https://huggingface.co/collections/OpenMOSS-Team/moss-audio). Blog and paper coming soon!
 
 
@@ -43,6 +44,7 @@ MOSS-Audio is an open-source **audio understanding model** from [MOSI.AI](https:
 - [Quickstart](#quickstart)
   - [Environment Setup](#environment-setup)
   - [Basic Usage](#basic-usage)
+  - [Fine-tuning](#fine-tuning)
   - [Gradio App](#gradio-app)
   - [SGLang Serving](#sglang-serving)
 - [More Information](#more-information)
@@ -561,6 +563,31 @@ python infer.py
 ```
 
 The default prompt in `infer.py` is `Describe this audio.` You can directly edit that line if you want to try transcription, audio QA, or speech captioning.
+
+<a id="fine-tuning"></a>
+
+### Fine-tuning
+
+We now provide an official fine-tuning script in `finetune/finetune.py`, with full instructions in `finetune/FINETUNE.md`.
+
+Install the extra dependencies needed for training:
+
+```bash
+pip install librosa peft
+```
+
+Minimal example for LoRA fine-tuning:
+
+```bash
+accelerate launch finetune/finetune.py \
+    --model_dir ./weights/MOSS-Audio-4B-Instruct \
+    --data_path train.jsonl \
+    --output_dir ./output/lora \
+    --use_lora \
+    --bf16
+```
+
+The training data should be a JSONL file containing audio-text conversations. For data format, supported arguments, multi-GPU examples, and full-parameter fine-tuning, see `finetune/FINETUNE.md`.
 
 ### Gradio App
 
