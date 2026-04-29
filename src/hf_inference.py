@@ -21,6 +21,8 @@ def read_env_model_id() -> str:
 def resolve_device() -> str:
     if torch.cuda.is_available():
         return "cuda:0"
+    if torch.backends.mps.is_available():
+        return "mps"
     return "cpu"
 
 
@@ -32,14 +34,14 @@ class MossAudioHFInference:
         self,
         model_name_or_path: str = DEFAULT_MODEL_ID,
         device: str = "cuda:0",
-        torch_dtype: str = "auto",
+        dtype: str = "auto",
         enable_time_marker: bool = True,
     ):
         self.device = device
         self.model = MossAudioModel.from_pretrained(
             model_name_or_path,
             trust_remote_code=True,
-            torch_dtype=torch_dtype,
+            dtype=dtype,
             device_map=device,
         )
         self.model.eval()

@@ -25,12 +25,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-flash-attn = ["flash-attn"]
+flash-attn = [
+    "flash-attn ; sys_platform == 'linux'",
+    "mps-flash-attn ; sys_platform == 'darwin'",
+]
 
 torch-runtime = [
     "accelerate",
-    "torch==2.9.1+cu128",
-    "torchaudio==2.9.1+cu128",
+    "torch==2.9.1+cu128 ; sys_platform == 'linux'",
+    "torchaudio==2.9.1+cu128 ; sys_platform == 'linux'",
+    "torch==2.9.1 ; sys_platform == 'darwin'",
+    "torchaudio==2.9.1 ; sys_platform == 'darwin'",
+    "torchcodec==0.9.*",
     "transformers==4.57.1",
 ]
 

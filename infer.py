@@ -4,19 +4,26 @@ from src.audio_io import load_audio
 from src.modeling_moss_audio import MossAudioModel
 from src.processing_moss_audio import MossAudioProcessor
 
-MODEL_PATH = "/inspire/qb-ilm/project/embodied-multimodality/public/yangchen/MOSS-Audio/weights/MOSS-Audio-4B-Thinking"
-AUDIO_PATH = "test_kr.mp3"
+MODEL_PATH = "weights/MOSS-Audio-4B-Thinking"
+AUDIO_PATH = "test/test_kr.mp3"
 TEMPERATURE = 1.0
 TOP_P = 1.0
 TOP_K = 50
 
 
 def main():
+    if torch.cuda.is_available():
+        device_map = "cuda:0"
+    elif torch.backends.mps.is_available():
+        device_map = "mps"
+    else:
+        device_map = "cpu"
+
     model = MossAudioModel.from_pretrained(
         MODEL_PATH,
         trust_remote_code=True,
-        torch_dtype="auto",
-        device_map="cuda:0",
+        dtype="auto",
+        device_map=device_map,
     )
     model.eval()
 
