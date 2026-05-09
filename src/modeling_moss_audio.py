@@ -2,6 +2,7 @@ from typing import Optional, List, Union, Tuple, Any
 import math
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast, BaseModelOutputWithPast
 from transformers.utils.auto_docstring import auto_docstring
 from transformers.modeling_utils import PreTrainedModel
@@ -78,35 +79,41 @@ class MossAudioEncoder(nn.Module):
             else nn.Identity()
         )
 
-        self._deepstack_indexes_set = set(config.deepstack_encoder_layer_indexes or [])
+        self.deepstack_encoder_layer_indexes = list(
+            config.deepstack_encoder_layer_indexes or []
+        )
+        self._deepstack_capture_map = {
+            layer_idx: capture_idx
+            for capture_idx, layer_idx in enumerate(self.deepstack_encoder_layer_indexes)
+        }
 
-    def _compute_downsampled_length(self, lengths: torch.Tensor) -> torch.Tensor:
+        self.n_window = int(config.n_window)
+        self.chunk_frames = int(self.n_window * 2)
+        self.conv_chunksize = int(config.conv_chunksize)
+
+    @property
+    def dtype(self) -> torch.dtype:
+        return self.conv1.weight.dtype
+
+    @staticmethod
+    def _compute_downsampled_length(lengths: torch.Tensor) -> torch.Tensor:
         def conv_out_len(L):
             return (L - 1) // 2 + 1
 
-        l1 = conv_out_len(lengths)
-        l2 = conv_out_len(l1)
-        l3 = conv_out_len(l2)
-        return l3
+        return conv_out_len(conv_out_len(conv_out_len(lengths)))
 
-    def forward(
+    def _encode_chunk_batch(
         self,
         input_features: torch.Tensor,
-        feature_lens: Optional[torch.Tensor] = None,
-        output_deepstack_hidden_states: bool = True,
-    ):
+        seq_lengths: torch.Tensor,
+    ) -> Tuple[torch.Tensor, List[torch.Tensor]]:
+        """Encode a batch of (already padded) chunks through the conv stem and
+        transformer layers. Returns (last_hidden, ordered_deepstack_hidden_states).
+        """
         if input_features.dim() == 2:
             input_features = input_features.unsqueeze(0)
 
-        if feature_lens is None:
-            feature_lens = torch.full(
-                (input_features.size(0),),
-                input_features.size(-1),
-                device=input_features.device,
-                dtype=torch.long,
-            )
-
-        downsampled_lengths = self._compute_downsampled_length(feature_lens)
+        downsampled_lengths = self._compute_downsampled_length(seq_lengths)
 
         # [B, n_mels, T] -> [B, 1, n_mels, T]
         x = input_features.unsqueeze(1)
@@ -131,24 +138,164 @@ class MossAudioEncoder(nn.Module):
         attention_mask = (1.0 - (~padding_mask).to(dtype=x.dtype)) * torch.finfo(x.dtype).min
         attention_mask = attention_mask.unsqueeze(1).unsqueeze(1)
 
-        deepstack_states: List[torch.Tensor] = []
+        deepstack_hidden_states: List[Optional[torch.Tensor]] = [None] * len(
+            self.deepstack_encoder_layer_indexes
+        )
         for layer_idx, layer in enumerate(self.layers):
-            layer_outputs = layer(
+            x = layer(
                 x,
                 attention_mask,
                 layer_head_mask=None,
                 output_attentions=False,
-            )
-            x = layer_outputs[0]
-            if output_deepstack_hidden_states and layer_idx in self._deepstack_indexes_set:
-                deepstack_states.append(x)
+            )[0]
+            capture_idx = self._deepstack_capture_map.get(layer_idx)
+            if capture_idx is not None:
+                deepstack_hidden_states[capture_idx] = x
 
         x = self.layer_norm(x)
         x = self.out_proj(x)
 
+        ordered_deepstack_hidden_states = [
+            h for h in deepstack_hidden_states if h is not None
+        ]
+        if not isinstance(self.out_proj, nn.Identity):
+            ordered_deepstack_hidden_states = [
+                self.out_proj(h) for h in ordered_deepstack_hidden_states
+            ]
+        return x, ordered_deepstack_hidden_states
+
+    def forward(
+        self,
+        input_features: torch.Tensor,
+        feature_lens: Optional[torch.Tensor] = None,
+        output_deepstack_hidden_states: bool = True,
+    ) -> BaseModelOutputWithPast:
+        if input_features.dim() == 3:
+            if feature_lens is None:
+                feature_lens = torch.full(
+                    (input_features.size(0),),
+                    input_features.size(-1),
+                    dtype=torch.long,
+                    device=input_features.device,
+                )
+            else:
+                feature_lens = feature_lens.to(
+                    device=input_features.device, dtype=torch.long
+                )
+            valid_chunks = [
+                input_features[i, :, : int(feature_lens[i].item())]
+                for i in range(int(input_features.shape[0]))
+            ]
+            input_features = torch.cat(valid_chunks, dim=1)
+        elif input_features.dim() != 2:
+            raise ValueError(
+                f"Expected [n_mels, T] or [B, n_mels, T], got {tuple(input_features.shape)}."
+            )
+
+        if feature_lens is None:
+            feature_lens = torch.tensor(
+                [int(input_features.shape[1])],
+                device=input_features.device,
+                dtype=torch.long,
+            )
+        else:
+            feature_lens = feature_lens.to(
+                device=input_features.device, dtype=torch.long
+            )
+
+        chunk_frames = int(self.chunk_frames)
+        chunk_num = torch.ceil(
+            feature_lens.to(torch.float32) / float(chunk_frames)
+        ).long()
+        chunk_lengths = torch.full(
+            (int(chunk_num.sum().item()),),
+            chunk_frames,
+            dtype=torch.long,
+            device=feature_lens.device,
+        )
+        tail_chunk_index = F.pad(chunk_num, (1, 0), value=-1).cumsum(0)[1:]
+        chunk_lengths[tail_chunk_index] = feature_lens % chunk_frames
+        chunk_lengths[chunk_lengths == 0] = chunk_frames
+
+        chunk_list = input_features.T.split(chunk_lengths.tolist(), dim=0)
+        padded_feature = nn.utils.rnn.pad_sequence(
+            chunk_list, batch_first=True
+        ).transpose(1, 2)
+
+        feature_lens_after_cnn = self._compute_downsampled_length(chunk_lengths)
+        t_down_max = (
+            int(feature_lens_after_cnn.max().item())
+            if feature_lens_after_cnn.numel() > 0
+            else 0
+        )
+        padded_mask_after_cnn = nn.utils.rnn.pad_sequence(
+            [
+                torch.ones(int(L.item()), dtype=torch.bool, device=padded_feature.device)
+                for L in feature_lens_after_cnn
+            ],
+            batch_first=True,
+        )
+        if padded_mask_after_cnn.shape[1] < t_down_max:
+            padded_mask_after_cnn = F.pad(
+                padded_mask_after_cnn,
+                (0, t_down_max - padded_mask_after_cnn.shape[1]),
+                value=False,
+            )
+
+        num_deepstack = len(self.deepstack_encoder_layer_indexes)
+        padded_embeds: List[torch.Tensor] = []
+        deepstack_padded_embeds: List[List[torch.Tensor]] = [
+            [] for _ in range(num_deepstack)
+        ]
+        for feat_chunk, len_chunk in zip(
+            padded_feature.split(self.conv_chunksize, dim=0),
+            chunk_lengths.split(self.conv_chunksize, dim=0),
+        ):
+            out, deepstack_outs = self._encode_chunk_batch(feat_chunk, len_chunk)
+            if out.shape[1] < t_down_max:
+                out = F.pad(out, (0, 0, 0, t_down_max - out.shape[1]))
+            padded_embeds.append(out)
+            if output_deepstack_hidden_states and num_deepstack > 0:
+                if len(deepstack_outs) != num_deepstack:
+                    raise RuntimeError(
+                        "Deepstack output count does not match configured layer indexes."
+                    )
+                for capture_idx, ds in enumerate(deepstack_outs):
+                    if ds.shape[1] < t_down_max:
+                        ds = F.pad(ds, (0, 0, 0, t_down_max - ds.shape[1]))
+                    deepstack_padded_embeds[capture_idx].append(ds)
+
+        if padded_embeds:
+            padded_embed = torch.cat(padded_embeds, dim=0)
+        else:
+            padded_embed = torch.empty(
+                (0, t_down_max, self.config.output_dim),
+                device=padded_feature.device,
+            )
+
+        valid_tokens = padded_embed[padded_mask_after_cnn]  # [N_valid, D]
+        last_hidden_state = valid_tokens.unsqueeze(0)  # [1, N_valid, D]
+
+        deepstack_states: Optional[Tuple[torch.Tensor, ...]] = None
+        if output_deepstack_hidden_states and num_deepstack > 0:
+            collected: List[torch.Tensor] = []
+            for chunks_list in deepstack_padded_embeds:
+                if chunks_list:
+                    ds = torch.cat(chunks_list, dim=0)
+                    collected.append(ds[padded_mask_after_cnn].unsqueeze(0))
+                else:
+                    collected.append(
+                        torch.empty(
+                            (1, 0, self.config.output_dim),
+                            device=padded_feature.device,
+                            dtype=padded_embed.dtype,
+                        )
+                    )
+            deepstack_states = tuple(collected)
+
         return BaseModelOutputWithPast(
-            last_hidden_state=x,
-            hidden_states=tuple(deepstack_states) if output_deepstack_hidden_states else None,
+            last_hidden_state=last_hidden_state,
+            hidden_states=deepstack_states,
         )
 
 
