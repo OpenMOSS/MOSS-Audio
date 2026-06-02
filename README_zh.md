@@ -11,7 +11,7 @@
   <a href="https://huggingface.co/collections/OpenMOSS-Team/moss-audio"><img src="https://img.shields.io/badge/Huggingface-Models-orange?logo=huggingface&amp"></a>
   <a href="https://modelscope.cn/collections/openmoss/MOSS-Audio"><img src="https://img.shields.io/badge/ModelScope-Models-624AFF?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyeiIvPjwvc3ZnPg==&amp"></a>
   <img src="https://img.shields.io/badge/Blog-Coming_Soon-blue?logo=internet-explorer&amp">
-  <img src="https://img.shields.io/badge/Arxiv-Coming_Soon-red?logo=Arxiv&amp">
+  <a href="https://arxiv.org/pdf/2606.01802"><img src="https://img.shields.io/badge/arXiv-2606.01802-red?logo=arxiv&amp"></a>
 
   <a href="https://x.com/Open_MOSS"><img src="https://img.shields.io/badge/Twitter-Follow-black?logo=x&amp"></a>
   <a href="https://discord.gg/Xf3aXddCjc"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&amp"></a>
@@ -29,8 +29,9 @@ MOSS-Audio 是由 [MOSI.AI](https://mosi.cn/#hero)、[OpenMOSS 团队](https://w
 
 
 ## 新闻
+* 2026.6.1：我们已在 arXiv 发布 [MOSS-Audio 技术报告](https://arxiv.org/pdf/2606.01802)。
 * 2026.4.20：我们新增了 MOSS-Audio 微调代码与文档。LoRA 和全参训练示例请见 `finetune/FINETUNE.md`。
-* 2026.4.13：🎉🎉🎉 我们已发布 [MOSS-Audio](https://huggingface.co/collections/OpenMOSS-Team/moss-audio)。博客和论文即将上线！
+* 2026.4.13：🎉🎉🎉 我们已发布 [MOSS-Audio](https://huggingface.co/collections/OpenMOSS-Team/moss-audio)。博客即将上线！
 
 
 ## 目录
@@ -665,12 +666,14 @@ MOSS-Audio 中的模型基于 Apache License 2.0 许可证发布。
 ## 引用
 
 ```bibtex
-@misc{mossaudio2026,
-      title={MOSS-Audio Technical Report},
-      author={OpenMOSS Team},
+@misc{yang2026mossaudiotechnicalreport,
+      title={MOSS-Audio Technical Report}, 
+      author={Chen Yang and Chufan Yu and Hanfu Chen and Jie Zhu and Jingqi Chen and Ke Chen and Wenxuan Wang and Yang Wang and Yaozhou Jiang and Yi Jiang and Zhengyuan Lin and Ziqi Chen and Zhaoye Fei and Chenghao Liu and Jun Zhan and Kang Yu and Kexin Huang and Mingshu Chen and Qinyuan Cheng and Ruixiao Li and Shimin Li and Songlin Wang and Yang Gao and Yiyang Zhang and Xipeng Qiu},
       year={2026},
-      howpublished={\url{https://github.com/OpenMOSS/MOSS-Audio}},
-      note={GitHub repository}
+      eprint={2606.01802},
+      archivePrefix={arXiv},
+      primaryClass={cs.SD},
+      url={https://arxiv.org/abs/2606.01802}, 
 }
 ```
 
