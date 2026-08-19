@@ -676,4 +676,4 @@ Models in MOSS-Audio are licensed under the Apache License 2.0.
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left)](https://www.star-history.com/#OpenMOSS/MOSS-Audio&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left)](https://star-history.dera.page/#OpenMOSS/MOSS-Audio&type=date&legend=top-left)
