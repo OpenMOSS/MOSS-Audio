@@ -679,4 +679,4 @@ MOSS-Audio 中的模型基于 Apache License 2.0 许可证发布。
 
 ## Star 历史
 
-[![Star History Chart](https://api.star-history.com/svg?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left)](https://www.star-history.com/#OpenMOSS/MOSS-Audio&type=date&legend=top-left)
+[![Star History Chart](https://star-history.dera.page/svg?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left)](https://star-history.dera.page/#OpenMOSS/MOSS-Audio&type=date&legend=top-left)
