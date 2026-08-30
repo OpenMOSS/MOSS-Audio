@@ -676,4 +676,10 @@ Models in MOSS-Audio are licensed under the Apache License 2.0.
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left)](https://www.star-history.com/#OpenMOSS/MOSS-Audio&type=date&legend=top-left)
+<a href="https://www.star-history.com/?repos=OpenMOSS%2FMOSS-Audio&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=OpenMOSS/MOSS-Audio&type=date&theme=dark&legend=top-left&sealed_token=a_jqkr-Hxltera6MZWY6WukhWVbvk7qH9Kxe9J3YMxAH1g2U0NjQljAOQ4Q_2sF7xqJmjsjYaVyjq1erYTDJX73nhFLZtDT2NHeKKAMEWbl1vso_3RagKUCRau7VG0smTWzjXrcz6wYoe9CcnA0mYdqvp3q0nHbd7DwynPLimdacS3HShFYpUiZg5Unj" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left&sealed_token=a_jqkr-Hxltera6MZWY6WukhWVbvk7qH9Kxe9J3YMxAH1g2U0NjQljAOQ4Q_2sF7xqJmjsjYaVyjq1erYTDJX73nhFLZtDT2NHeKKAMEWbl1vso_3RagKUCRau7VG0smTWzjXrcz6wYoe9CcnA0mYdqvp3q0nHbd7DwynPLimdacS3HShFYpUiZg5Unj" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=OpenMOSS/MOSS-Audio&type=date&legend=top-left&sealed_token=a_jqkr-Hxltera6MZWY6WukhWVbvk7qH9Kxe9J3YMxAH1g2U0NjQljAOQ4Q_2sF7xqJmjsjYaVyjq1erYTDJX73nhFLZtDT2NHeKKAMEWbl1vso_3RagKUCRau7VG0smTWzjXrcz6wYoe9CcnA0mYdqvp3q0nHbd7DwynPLimdacS3HShFYpUiZg5Unj" />
+ </picture>
+</a>
