@@ -10,7 +10,7 @@
 <div align="center">
   <a href="https://huggingface.co/collections/OpenMOSS-Team/moss-audio"><img src="https://img.shields.io/badge/Huggingface-Models-orange?logo=huggingface&amp"></a>
   <a href="https://modelscope.cn/collections/openmoss/MOSS-Audio"><img src="https://img.shields.io/badge/ModelScope-Models-624AFF?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyeiIvPjwvc3ZnPg==&amp"></a>
-  <img src="https://img.shields.io/badge/Blog-Coming_Soon-blue?logo=internet-explorer&amp">
+  <a href="https://openmoss.ai/MOSS-Audio/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="MOSS-Audio project page"></a>
   <a href="https://arxiv.org/pdf/2606.01802"><img src="https://img.shields.io/badge/arXiv-2606.01802-red?logo=arxiv&amp"></a>
 
   <a href="https://x.com/Open_MOSS"><img src="https://img.shields.io/badge/Twitter-Follow-black?logo=x&amp"></a>
@@ -27,6 +27,8 @@
 
 MOSS-Audio is an open-source **audio understanding model** from [MOSI.AI](https://mosi.cn/#hero), the [OpenMOSS team](https://www.open-moss.com/), and [Shanghai Innovation Institute](https://www.sii.edu.cn/). It performs unified modeling over complex real-world audio, supporting **speech understanding, environmental sound understanding, music understanding, audio captioning, time-aware QA, and complex reasoning**. In this release, we provide **four models**: **MOSS-Audio-4B-Instruct**, **MOSS-Audio-4B-Thinking**, **MOSS-Audio-8B-Instruct**, and **MOSS-Audio-8B-Thinking**. The Instruct variants are optimized for direct instruction following, while the Thinking variants provide stronger chain-of-thought reasoning capabilities.
 
+
+**Start here:** [Run locally](#quickstart) · [Gradio app](#gradio-app) · [Model weights](https://huggingface.co/collections/OpenMOSS-Team/moss-audio) · [Fine-tuning](#fine-tuning) · [Evaluation](#evaluation)
 
 ## News
 * 2026.6.1: We have released the [MOSS-Audio Technical Report](https://arxiv.org/pdf/2606.01802) on arXiv.

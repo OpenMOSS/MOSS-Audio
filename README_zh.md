@@ -10,7 +10,7 @@
 <div align="center">
   <a href="https://huggingface.co/collections/OpenMOSS-Team/moss-audio"><img src="https://img.shields.io/badge/Huggingface-Models-orange?logo=huggingface&amp"></a>
   <a href="https://modelscope.cn/collections/openmoss/MOSS-Audio"><img src="https://img.shields.io/badge/ModelScope-Models-624AFF?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyeiIvPjwvc3ZnPg==&amp"></a>
-  <img src="https://img.shields.io/badge/Blog-Coming_Soon-blue?logo=internet-explorer&amp">
+  <a href="https://openmoss.ai/MOSS-Audio/"><img src="https://img.shields.io/badge/Project-Page-blue" alt="MOSS-Audio project page"></a>
   <a href="https://arxiv.org/pdf/2606.01802"><img src="https://img.shields.io/badge/arXiv-2606.01802-red?logo=arxiv&amp"></a>
 
   <a href="https://x.com/Open_MOSS"><img src="https://img.shields.io/badge/Twitter-Follow-black?logo=x&amp"></a>
@@ -27,6 +27,8 @@
 
 MOSS-Audio 是由 [MOSI.AI](https://mosi.cn/#hero)、[OpenMOSS 团队](https://www.open-moss.com/) 和 [上海创智学院](https://www.sii.edu.cn/) 推出的开源 **音频理解模型**。它面向复杂真实世界音频进行统一建模，支持 **语音理解、环境声理解、音乐理解、音频描述、时间感知问答和复杂推理**。本次发布共提供 **4 个模型**：**MOSS-Audio-4B-Instruct**、**MOSS-Audio-4B-Thinking**、**MOSS-Audio-8B-Instruct** 和 **MOSS-Audio-8B-Thinking**。其中 Instruct 版本更适合直接指令跟随，Thinking 版本则具备更强的链式思维推理能力。
 
+
+**从这里开始：** [本地运行](#快速开始) · [Gradio 应用](#gradio-应用) · [模型下载](https://huggingface.co/collections/OpenMOSS-Team/moss-audio) · [微调](#微调) · [评测](#评测)
 
 ## 新闻
 * 2026.6.1：我们已在 arXiv 发布 [MOSS-Audio 技术报告](https://arxiv.org/pdf/2606.01802)。
